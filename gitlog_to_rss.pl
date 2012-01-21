@@ -22,6 +22,7 @@
 use strict;
 use Getopt::Long;
 use Cwd;
+use HTML::Entities;
 
 my %options;
 my $gitlog;
@@ -103,12 +104,12 @@ sub ParseGitLog {
         print "Command failed: $!\n";
         return undef;
     }
-    return $result; 
+    return HTML::Entities::encode($result);
 }
 
 sub SplitCommits {
     my $gitlog = shift || return undef;
-    my @items = split(/\n>/, $gitlog);
+    my @items = split(/\n&gt;/, $gitlog);
     my $size = scalar @items;
     my (@lines, @commit, $i);
 
