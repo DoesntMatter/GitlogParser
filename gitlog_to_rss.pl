@@ -113,7 +113,7 @@ sub SplitCommits {
     my (@lines, @commit, $i);
 
     for $i ( 0 .. ($size - 1) ) {
-        @lines = split(/\n/, $items[$i], 6);
+        @lines = split(/\n/, $items[$i], 7);
         $commit[$i] = [ @lines ];
     }
     return @commit;
