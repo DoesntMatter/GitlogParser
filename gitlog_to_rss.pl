@@ -74,6 +74,8 @@ unless ($gitlog) {
     exit;
 }
 
+CreateRSS($gitlog, $options{'outfile'});
+
 exit;
 
 #
@@ -119,4 +121,57 @@ sub SplitCommits {
         $commit[$i] = [ @lines ];
     }
     return @commit;
+}
+
+sub CreateRSS {
+    my $gitlog = shift || return undef;
+    my $file = shift || return undef;
+    my @items = SplitCommits($gitlog);
+
+    # Header
+    open(FILE, ">$file");
+    print FILE "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<rss version=\"2.0\">
+<channel>
+
+<title>Title of the RSS 2.0 Feed</title>
+<link>http://dev-blog.doesntmatter.de/</link>
+<description>RSS 2.0 feed description</description>
+";
+    close(FILE);
+
+    # Content
+    open(FILE, ">>$file");
+    for my $i ( 0 .. $#items ) {
+        # $items[$i][0] Blank
+        # $items[$i][1] Commit-Hash
+        # $items[$i][2] Commit-Date
+        # $items[$i][3] Author
+        # $items[$i][4] E-Mail
+        # $items[$i][5] Subject
+        # $items[$i][6] Body
+
+        $items[$i][6] =~ s/\n/<br><br>/; # Better formatting
+
+        print FILE "
+<item>
+    <title>$items[$i][5]</title>
+    <link>http://dev-blog.doesntmatter.de/</link>
+    <description><![CDATA[
+$items[$i][3] &lt;$items[$i][4]&gt; committed $items[$i][1]<br><br>
+$items[$i][5]<br><br>
+$items[$i][6]
+   ]]></description>
+</item>";
+    }
+    close(FILE);
+
+    # Footer
+    open(FILE, ">>$file");
+    print FILE "\n
+</channel>
+</rss>";
+    close(FILE);
+
+    return;
 }
