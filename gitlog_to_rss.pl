@@ -95,7 +95,7 @@ HELP
 
 sub ParseGitLog {
     my $repo = shift || return undef;
-    my $cmd = "git log --pretty=tformat:%H%n%ct%n%cn%n%ce%n%B%m $repo";
+    my $cmd = "git log --pretty=tformat:%H%n%cd%n%cn%n%ce%n%s%n%b%m $repo";
     my $result;
 
     $result = qx/$cmd/;
@@ -113,7 +113,7 @@ sub SplitCommits {
     my (@lines, @commit, $i);
 
     for $i ( 0 .. ($size - 1) ) {
-        @lines = split(/\n/, $items[$i], 5);
+        @lines = split(/\n/, $items[$i], 6);
         $commit[$i] = [ @lines ];
     }
     return @commit;
