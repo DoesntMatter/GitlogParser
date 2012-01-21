@@ -21,8 +21,13 @@
 
 use strict;
 use Getopt::Long;
+use Cwd;
 
 my %options;
+
+#
+# Get options
+#
 
 GetOptions (
     \%options,
@@ -31,8 +36,30 @@ GetOptions (
     "help|?",
 );
 
+#
+# Check and set options
+#
+
 if ($options{'help'}) {
     ShowHelp();
+}
+
+if ($options{'repo'} and $options{'repo'} ne '') {
+   unless (-d $options{'repo'}) {
+       print "Repository does not exist in given path!\n";
+       exit;
+   }
+   unless (-d ($options{'repo'} . "/.git")) {
+       print "Given directory is not a Git repository!\n";
+       exit;
+   }
+}
+else {
+    ShowHelp();
+}
+
+unless ($options{'outfile'} and $options{'outfile'} ne '') {
+    $options{'outfile'} = cwd();
 }
 
 exit;
