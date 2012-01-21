@@ -1,0 +1,19 @@
+Gitlog to RSS - Converts the output of `git log` to a RSS feed
+
+Copyright (C) 2012, by:  Dennis Christ <jaed1@gmx.net>
+
+
+Explanation
+---------------------------------------------------------------
+"Gitlog to RSS" is used for an automated build of RSS feeds out
+of your `git log` command.
+
+
+Version
+---------------------------------------------------------------
+0.1 alpha
+
+
+Manual
+---------------------------------------------------------------
+This will follow after code base is available.
