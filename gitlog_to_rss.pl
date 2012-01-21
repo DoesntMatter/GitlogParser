@@ -105,3 +105,16 @@ sub ParseGitLog {
     }
     return $result; 
 }
+
+sub SplitCommits {
+    my $gitlog = shift || return undef;
+    my @items = split(/\n>/, $gitlog);
+    my $size = scalar @items;
+    my (@lines, @commit, $i);
+
+    for $i ( 0 .. ($size - 1) ) {
+        @lines = split(/\n/, $items[$i], 5);
+        $commit[$i] = [ @lines ];
+    }
+    return @commit;
+}
