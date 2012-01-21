@@ -60,7 +60,7 @@ else {
 }
 
 unless ($options{'outfile'} and $options{'outfile'} ne '') {
-    $options{'outfile'} = cwd();
+    $options{'outfile'} = cwd() . "/feed.rss";
 }
 
 #
