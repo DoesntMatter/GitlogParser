@@ -99,11 +99,12 @@ sub ParseGitLog {
     my $cmd = "git log --pretty=tformat:%H%n%cd%n%cn%n%ce%n%s%n%b%m $repo";
     my $result;
 
-    $result = qx/$cmd/;
+    $result = "\n" . qx/$cmd/;
     if ($? == -1) {
         print "Command failed: $!\n";
         return undef;
     }
+    $result =~ s/\s+$//; # Remove trailing whitespaces
     return HTML::Entities::encode($result);
 }
 
