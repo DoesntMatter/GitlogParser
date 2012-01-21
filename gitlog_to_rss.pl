@@ -24,6 +24,7 @@ use Getopt::Long;
 use Cwd;
 
 my %options;
+my $gitlog;
 
 #
 # Get options
@@ -62,6 +63,16 @@ unless ($options{'outfile'} and $options{'outfile'} ne '') {
     $options{'outfile'} = cwd();
 }
 
+#
+# Do the job
+#
+
+$gitlog = ParseGitLog($options{'repo'});
+unless ($gitlog) {
+    print "Parsing `git log` command failed!\n";
+    exit;
+}
+
 exit;
 
 #
@@ -81,3 +92,16 @@ HELP
 
     exit;
 };
+
+sub ParseGitLog {
+    my $repo = shift || return undef;
+    my $cmd = "git log --pretty=tformat:%H%n%ct%n%cn%n%ce%n%B%m $repo";
+    my $result;
+
+    $result = qx/$cmd/;
+    if ($? == -1) {
+        print "Command failed: $!\n";
+        return undef;
+    }
+    return $result; 
+}
