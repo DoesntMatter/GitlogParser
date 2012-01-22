@@ -1,12 +1,16 @@
-Gitlog to RSS - Converts the output of `git log` to a RSS feed
+GitlogParser - Converts the output of `git log` to different
+               output types
 
 Copyright (C) 2012, by:  Dennis Christ <jaed1@gmx.net>
 
 
 Explanation
 ---------------------------------------------------------------
-"Gitlog to RSS" is used for an automated build of RSS feeds out
-of your `git log` command.
+"GitlogParser" is used for an automated build of different
+filetypes out of your `git log` command.
+
+List of current support filetypes:
+- RSS Feed
 
 
 Version

@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
-# Gitlog to RSS
-# Converts the output of `git log` to a RSS feed
+# GitlogParser
+# Converts the output of `git log` to different output types
 #
 # Copyright (C) 2012, by:  Dennis Christ <jaed1@gmx.net>
 # http://dev-blog.doesntmatter.de
