@@ -24,9 +24,9 @@ use Getopt::Long;
 use Cwd;
 use HTML::Entities;
 
-require "headers/generic.ph";
-require "headers/parser.ph";
-require "headers/rss.ph";
+require "../headers/generic.ph";
+require "../headers/parser.ph";
+require "../headers/rss.ph";
 
 my %options;
 my ($gitlog, $giturl);

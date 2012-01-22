@@ -23,9 +23,9 @@ use strict;
 use Getopt::Long;
 use Cwd;
 
-require "headers/generic.ph";
-require "headers/parser.ph";
-require "headers/sql.ph";
+require "../headers/generic.ph";
+require "../headers/parser.ph";
+require "../headers/sql.ph";
 
 my %options;
 my $gitlog;
