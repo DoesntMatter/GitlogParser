@@ -25,6 +25,7 @@ use Cwd;
 use HTML::Entities;
 
 require "headers/generic.ph";
+require "headers/parser.ph";
 require "headers/rss.ph";
 
 my %options;
@@ -99,7 +100,7 @@ else {
 # Do the job
 #
 
-$gitlog = GENERIC::ParseGitLog($options{'repo'}, $options{'count'});
+$gitlog = PARSER::ParseGitLog($options{'repo'}, $options{'count'});
 unless ($gitlog) {
     print "Parsing `git log` command failed!\n";
     exit;

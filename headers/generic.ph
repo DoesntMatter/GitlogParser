@@ -94,39 +94,4 @@ sub GetGithubUrl {
     return undef;
 }
 
-sub ParseGitLog {
-    my $repo = shift || return undef;
-    my $count = shift;
-    my ($cmd, $result);
-
-    if ($count) {
-        $cmd = "git log -n$count --pretty=tformat:%H%n%cd%n%cn%n%ce%n%s%n%b%m $repo";
-    }
-    else {
-        $cmd = "git log --pretty=tformat:%H%n%cd%n%cn%n%ce%n%s%n%b%m $repo";
-    }
-
-    $result = "\n" . qx/$cmd/;
-    if ($? == -1) {
-        print "Command failed: $!\n";
-        return undef;
-    }
-    $result =~ s/\s+$//; # Remove trailing whitespaces
-    return $result;
-}
-
-sub SplitCommits {
-    my $gitlog = shift || return undef;
-    my $seperator = shift || "\n>";
-    my @items = split(/$seperator/, $gitlog);
-    my $size = scalar @items;
-    my (@lines, @commit, $i);
-
-    for $i ( 0 .. ($size - 1) ) {
-        @lines = split(/\n/, $items[$i], 7);
-        $commit[$i] = [ @lines ];
-    }
-    return @commit;
-}
-
 return 1;
