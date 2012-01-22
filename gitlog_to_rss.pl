@@ -193,6 +193,7 @@ sub CreateRSS {
     my $file = shift || return undef;
     my $rss = shift || return undef;
     my @items = SplitCommits($gitlog);
+    my $weblink = "https://github.com";
 
     # Header
     open(FILE, ">$file");
@@ -224,7 +225,7 @@ sub CreateRSS {
     <title>$items[$i][5]</title>
     <link>$rss{'link'}</link>
     <description><![CDATA[
-$items[$i][3] &lt;$items[$i][4]&gt; committed $items[$i][1]<br><br>
+<a href=\"$weblink/$items[$i][3]\">$items[$i][3]</a> &lt;$items[$i][4]&gt; committed $items[$i][1]<br><br>
 $items[$i][5]<br><br>
 $items[$i][6]
    ]]></description>
