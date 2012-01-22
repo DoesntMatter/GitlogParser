@@ -35,6 +35,7 @@ GetOptions (
     \%options,
     "repo=s",
     "outfile=s",
+    "prompt",
     "help|?",
 );
 
@@ -42,21 +43,28 @@ GetOptions (
 # Check and set options
 #
 
-if ($options{'help'}) {
-    ShowHelp();
-}
-
-if ($options{'repo'} and $options{'repo'} ne '') {
-    unless (CheckRepo($options{'repo'})) {
+unless ($options{'prompt'}) {
+    if ($options{'help'}) {
         ShowHelp();
+    }
+    if ($options{'repo'} and $options{'repo'} ne '') {
+        unless (CheckRepo($options{'repo'})) {
+            ShowHelp();
+        }
+    }
+    else {
+        ShowHelp();
+    }
+    unless ($options{'outfile'} and $options{'outfile'} ne '') {
+        $options{'outfile'} = cwd() . "/feed.rss";
     }
 }
 else {
-    ShowHelp();
-}
-
-unless ($options{'outfile'} and $options{'outfile'} ne '') {
-    $options{'outfile'} = cwd() . "/feed.rss";
+    $options{'repo'} = GetInput("Please enter repository path: ", 1);
+    unless (CheckRepo($options{'repo'})) {
+        ShowHelp();
+    }
+    $options{'outfile'} = GetInput("Please enter outfile path: ");
 }
 
 #
@@ -85,11 +93,32 @@ Copyright (C) 2012, by:  Dennis Christ <jaed1\@gmx.net>
 Options:
     --repo REPO         Path to your Git repository
     --outfile FILE      Name and path of generated RSS file
+    --prompt            Prompt for input and do not use options
     --help              Show this output
 HELP
 
     exit;
 };
+
+sub GetInput {
+    my $text = shift || return undef;
+    my $mandatory = shift || 0;
+    my $input;
+
+    if ($mandatory) {
+        until ($input) {
+            print STDERR $text;
+            $input = <>;
+            chomp($input);
+        }
+    }
+    else {
+        print STDERR $text;
+        $input = <>;
+        chomp($input);
+    }
+    return $input;
+}
 
 sub CheckRepo {
     my $repo = shift || return undef;
