@@ -28,7 +28,7 @@ require "headers/generic.ph";
 require "headers/rss.ph";
 
 my %options;
-my $gitlog;
+my ($gitlog, $giturl);
 
 #
 # Get options
@@ -42,6 +42,7 @@ GetOptions (
     "title=s",
     "desc=s",
     "link=s",
+    "github",
     "prompt",
     "help|?",
 );
@@ -74,6 +75,9 @@ unless ($options{'prompt'}) {
     if ($options{'title'} and $options{'title'} ne '') {
         $RSS::rss{'desc'} = $options{'desc'};
     }
+    if ($options{'github'}) {
+        $giturl = GENERIC::GetGithubUrl($options{'repo'});
+    }
 }
 else {
     $options{'repo'} = GENERIC::GetInput("Please enter repository path: ", 1);
@@ -85,6 +89,10 @@ else {
     $RSS::rss{'title'} = GENERIC::GetInput("Please enter RSS title: ");
     $RSS::rss{'desc'} = GENERIC::GetInput("Please enter RSS description: ");
     $RSS::rss{'link'} = GENERIC::GetInput("Please enter RSS link: ");
+    $options{'github'} = GENERIC::GetInput("Please confirm github usage (0|1): ");
+    if ($options{'github'}) {
+        $giturl = GENERIC::GetGithubUrl($options{'repo'});
+    }
 }
 
 #
@@ -97,6 +105,6 @@ unless ($gitlog) {
     exit;
 }
 
-RSS::CreateRSS(HTML::Entities::encode($gitlog), $options{'outfile'}, \%RSS::rss);
+RSS::CreateRSS(HTML::Entities::encode($gitlog), $options{'outfile'}, \%RSS::rss, $giturl);
 
 exit;

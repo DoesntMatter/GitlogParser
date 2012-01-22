@@ -54,6 +54,7 @@ Options:
                         Default: "RSS 2.0 feed description"
     --link LINK         Link of your RSS Feed
                         Default: http://dev-blog.doesntmatter.de
+    --github            Links your commits to github
     --prompt            Prompt for input and do not use options
     --help              Show this output
 HELP
@@ -65,8 +66,11 @@ sub CreateRSS {
     my $gitlog = shift || return undef;
     my $file = shift || return undef;
     my $rss = shift || return undef;
+    my $github = shift;
     my @items = GENERIC::SplitCommits($gitlog, "\n&gt;");
     my $weblink = "https://github.com";
+    my $itemlink = $rss{'link'};
+    my $commit;
 
     # Header
     open(FILE, ">$file");
@@ -75,7 +79,7 @@ sub CreateRSS {
 <channel>
 
 <title>$rss{'title'}</title>
-<link>$rss{'link'}</link>
+<link>$itemlink</link>
 <description>$rss{'desc'}</description>
 ";
     close(FILE);
@@ -92,13 +96,18 @@ sub CreateRSS {
         # $items[$i][6] Body
 
         $items[$i][6] =~ s/\n/<br><br>/; # Better formatting
+        if ($github) {
+            $itemlink = $commit = join("/", $github, "commit", $items[$i][1]);
+            $items[$i][1] = "<a href=\"$commit\">$items[$i][1]</a>";
+            $items[$i][3] = "<a href=\"$weblink/$items[$i][3]\">$items[$i][3]</a>";
+        }
 
         print FILE "
 <item>
     <title>$items[$i][5]</title>
-    <link>$rss{'link'}</link>
+    <link>$itemlink</link>
     <description><![CDATA[
-<a href=\"$weblink/$items[$i][3]\">$items[$i][3]</a> &lt;$items[$i][4]&gt; committed $items[$i][1]<br><br>
+$items[$i][3] &lt;$items[$i][4]&gt; committed $items[$i][1]<br><br>
 $items[$i][5]<br><br>
 $items[$i][6]
    ]]></description>

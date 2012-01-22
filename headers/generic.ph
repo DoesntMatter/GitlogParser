@@ -61,6 +61,39 @@ sub CheckRepo {
     return 1;
 }
 
+sub GetGithubUrl {
+    my $repo = shift || return undef;
+    my $cmd = "git remote -v";
+    my $urlbase = "https://github.com";
+    my (@elements, @url, @part);
+    my ($result, $append);
+
+    $result = qx/$cmd/;
+    if ($result =~ /^(origin)/) {
+        @elements = split(/\s+/, $result);
+        if ($elements[1] =~ /\/(.*)\//) {
+            # Read-Only
+            # git://github.com/DoesntMatter/GitlogParser.git
+            # HTTP
+            # https://DoesntMatter@github.com/DoesntMatter/GitlogParser.git
+
+            @url = split(/\//, $elements[1]);
+            $append = join("/", $urlbase, $url[3], $url[4]);
+            return substr($append, 0, -4); # Cut off .git ending
+        }
+        elsif ($elements[1] =~ /:(.*)\//) {
+            # SSH
+            # git@github.com:DoesntMatter/GitlogParser.git
+
+            @url = split(/\//, $elements[1]);
+            @part = split(/:/, $url[0]);
+            $append = join("/", $urlbase, $part[1], $url[1]);
+            return substr($append, 0, -4); # Cut off .git ending
+        }
+    }
+    return undef;
+}
+
 sub ParseGitLog {
     my $repo = shift || return undef;
     my $count = shift;
