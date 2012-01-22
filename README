@@ -11,11 +11,12 @@ filetypes out of your `git log` command.
 
 List of current support filetypes:
 - RSS Feed
+- SQL File
 
 
 Version
 ---------------------------------------------------------------
-1.4 beta
+1.5
 
 
 Manual
@@ -36,5 +37,17 @@ Options:
     --link LINK         Link of your RSS Feed
                         Default: http://dev-blog.doesntmatter.de
     --github            Links your commits to github
+    --prompt            Prompt for input and do not use options
+    --help              Show this output
+
+Usage:
+    ./gitlog_to_sql.pl --repo /path/to/repository
+
+Options:
+    --repo REPO         Path to your Git repository
+    --count COUNT       Count of commits that shoud be parsed
+                        Default: All commits
+    --outfile FILE      Name and path of generated SQL file
+                        Default: $PWD/log.sql
     --prompt            Prompt for input and do not use options
     --help              Show this output
