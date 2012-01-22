@@ -11,7 +11,7 @@ of your `git log` command.
 
 Version
 ---------------------------------------------------------------
-1.0 beta
+1.1 beta
 
 
 Manual
@@ -22,4 +22,12 @@ Usage:
 Options:
     --repo REPO         Path to your Git repository
     --outfile FILE      Name and path of generated RSS file
+                        Default: $PWD/feed.rss
+    --title TITLE       Title of your RSS Feed
+                        Default: "Title of the RSS 2.0 Feed"
+    --desc DESC         Description of your RSS Feed
+                        Default: "RSS 2.0 feed description"
+    --link LINK         Link of your RSS Feed
+                        Default: http://dev-blog.doesntmatter.de
+    --prompt            Prompt for input and do not use options
     --help              Show this output
