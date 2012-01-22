@@ -47,14 +47,9 @@ if ($options{'help'}) {
 }
 
 if ($options{'repo'} and $options{'repo'} ne '') {
-   unless (-d $options{'repo'}) {
-       print "Repository does not exist in given path!\n";
-       exit;
-   }
-   unless (-d ($options{'repo'} . "/.git")) {
-       print "Given directory is not a Git repository!\n";
-       exit;
-   }
+    unless (CheckRepo($options{'repo'})) {
+        ShowHelp();
+    }
 }
 else {
     ShowHelp();
@@ -95,6 +90,20 @@ HELP
 
     exit;
 };
+
+sub CheckRepo {
+    my $repo = shift || return undef;
+
+    unless (-d $repo) {
+        print "Repository does not exist in given path!\n";
+        return undef;
+    }
+    unless (-d ($repo . "/.git")) {
+        print "Given directory is not a Git repository!\n";
+        return undef;
+    }
+    return 1;
+}
 
 sub ParseGitLog {
     my $repo = shift || return undef;
