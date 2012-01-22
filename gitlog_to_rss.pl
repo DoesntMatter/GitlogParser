@@ -97,6 +97,6 @@ unless ($gitlog) {
     exit;
 }
 
-RSS::CreateRSS($gitlog, $options{'outfile'}, \%RSS::rss);
+RSS::CreateRSS(HTML::Entities::encode($gitlog), $options{'outfile'}, \%RSS::rss);
 
 exit;

@@ -65,7 +65,7 @@ sub CreateRSS {
     my $gitlog = shift || return undef;
     my $file = shift || return undef;
     my $rss = shift || return undef;
-    my @items = GENERIC::SplitCommits($gitlog);
+    my @items = GENERIC::SplitCommits($gitlog, "\n&gt;");
     my $weblink = "https://github.com";
 
     # Header

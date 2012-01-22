@@ -20,7 +20,6 @@
 # http://www.gnu.org/copyleft/gpl.html
 
 use strict;
-use HTML::Entities;
 
 package GENERIC;
 
@@ -80,12 +79,13 @@ sub ParseGitLog {
         return undef;
     }
     $result =~ s/\s+$//; # Remove trailing whitespaces
-    return HTML::Entities::encode($result);
+    return $result;
 }
 
 sub SplitCommits {
     my $gitlog = shift || return undef;
-    my @items = split(/\n&gt;/, $gitlog);
+    my $seperator = shift || "\n>";
+    my @items = split(/$seperator/, $gitlog);
     my $size = scalar @items;
     my (@lines, @commit, $i);
 
