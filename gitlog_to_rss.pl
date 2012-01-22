@@ -39,6 +39,7 @@ my %rss = (
 GetOptions (
     \%options,
     "repo=s",
+    "count=i",
     "outfile=s",
     "title=s",
     "desc=s",
@@ -81,6 +82,7 @@ else {
     unless (CheckRepo($options{'repo'})) {
         ShowHelp();
     }
+    $options{'count'} = GetInput("Please enter count of commits: ");
     $options{'outfile'} = GetInput("Please enter outfile path: ");
     $rss{'title'} = GetInput("Please enter RSS title: ");
     $rss{'desc'} = GetInput("Please enter RSS description: ");
@@ -91,7 +93,7 @@ else {
 # Do the job
 #
 
-$gitlog = ParseGitLog($options{'repo'});
+$gitlog = ParseGitLog($options{'repo'}, $options{'count'});
 unless ($gitlog) {
     print "Parsing `git log` command failed!\n";
     exit;
@@ -112,6 +114,8 @@ Copyright (C) 2012, by:  Dennis Christ <jaed1\@gmx.net>
 
 Options:
     --repo REPO         Path to your Git repository
+    --count COUNT       Count of commits that shoud be parsed
+                        Default: All commits
     --outfile FILE      Name and path of generated RSS file
                         Default: \$PWD/feed.rss
     --title TITLE       Title of your RSS Feed
@@ -163,8 +167,15 @@ sub CheckRepo {
 
 sub ParseGitLog {
     my $repo = shift || return undef;
-    my $cmd = "git log --pretty=tformat:%H%n%cd%n%cn%n%ce%n%s%n%b%m $repo";
-    my $result;
+    my $count = shift;
+    my ($cmd, $result);
+
+    if ($count) {
+        $cmd = "git log -n$count --pretty=tformat:%H%n%cd%n%cn%n%ce%n%s%n%b%m $repo";
+    }
+    else {
+        $cmd = "git log --pretty=tformat:%H%n%cd%n%cn%n%ce%n%s%n%b%m $repo";
+    }
 
     $result = "\n" . qx/$cmd/;
     if ($? == -1) {
