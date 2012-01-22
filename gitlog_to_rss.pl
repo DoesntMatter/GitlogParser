@@ -26,6 +26,11 @@ use HTML::Entities;
 
 my %options;
 my $gitlog;
+my %rss = (
+    title => 'Title of the RSS 2.0 Feed',
+    desc => 'RSS 2.0 feed description',
+    link => 'http://dev-blog.doesntmatter.de/',
+);
 
 #
 # Get options
@@ -35,6 +40,9 @@ GetOptions (
     \%options,
     "repo=s",
     "outfile=s",
+    "title=s",
+    "desc=s",
+    "link=s",
     "prompt",
     "help|?",
 );
@@ -58,6 +66,15 @@ unless ($options{'prompt'}) {
     unless ($options{'outfile'} and $options{'outfile'} ne '') {
         $options{'outfile'} = cwd() . "/feed.rss";
     }
+    if ($options{'title'} and $options{'title'} ne '') {
+        $rss{'title'} = $options{'title'};
+    }
+    if ($options{'desc'} and $options{'desc'} ne '') {
+        $rss{'desc'} = $options{'desc'};
+    }
+    if ($options{'title'} and $options{'title'} ne '') {
+        $rss{'desc'} = $options{'desc'};
+    }
 }
 else {
     $options{'repo'} = GetInput("Please enter repository path: ", 1);
@@ -65,6 +82,9 @@ else {
         ShowHelp();
     }
     $options{'outfile'} = GetInput("Please enter outfile path: ");
+    $rss{'title'} = GetInput("Please enter RSS title: ");
+    $rss{'desc'} = GetInput("Please enter RSS description: ");
+    $rss{'link'} = GetInput("Please enter RSS link: ");
 }
 
 #
@@ -77,7 +97,7 @@ unless ($gitlog) {
     exit;
 }
 
-CreateRSS($gitlog, $options{'outfile'});
+CreateRSS($gitlog, $options{'outfile'}, \%rss);
 
 exit;
 
@@ -93,6 +113,13 @@ Copyright (C) 2012, by:  Dennis Christ <jaed1\@gmx.net>
 Options:
     --repo REPO         Path to your Git repository
     --outfile FILE      Name and path of generated RSS file
+                        Default: \$PWD/feed.rss
+    --title TITLE       Title of your RSS Feed
+                        Default: "Title of the RSS 2.0 Feed"
+    --desc DESC         Description of your RSS Feed
+                        Default: "RSS 2.0 feed description"
+    --link LINK         Link of your RSS Feed
+                        Default: http://dev-blog.doesntmatter.de
     --prompt            Prompt for input and do not use options
     --help              Show this output
 HELP
@@ -164,6 +191,7 @@ sub SplitCommits {
 sub CreateRSS {
     my $gitlog = shift || return undef;
     my $file = shift || return undef;
+    my $rss = shift || return undef;
     my @items = SplitCommits($gitlog);
 
     # Header
@@ -172,9 +200,9 @@ sub CreateRSS {
 <rss version=\"2.0\">
 <channel>
 
-<title>Title of the RSS 2.0 Feed</title>
-<link>http://dev-blog.doesntmatter.de/</link>
-<description>RSS 2.0 feed description</description>
+<title>$rss{'title'}</title>
+<link>$rss{'link'}</link>
+<description>$rss{'desc'}</description>
 ";
     close(FILE);
 
@@ -194,7 +222,7 @@ sub CreateRSS {
         print FILE "
 <item>
     <title>$items[$i][5]</title>
-    <link>http://dev-blog.doesntmatter.de/</link>
+    <link>$rss{'link'}</link>
     <description><![CDATA[
 $items[$i][3] &lt;$items[$i][4]&gt; committed $items[$i][1]<br><br>
 $items[$i][5]<br><br>
