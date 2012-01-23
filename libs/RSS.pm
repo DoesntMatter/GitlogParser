@@ -28,7 +28,7 @@ package RSS;
 # Variables
 #
 
-my %rss = (
+our %rss = (
     title => 'Title of the RSS 2.0 Feed',
     desc  => 'RSS 2.0 feed description',
     link  => 'http://dev-blog.doesntmatter.de/',
