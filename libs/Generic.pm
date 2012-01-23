@@ -21,7 +21,7 @@
 
 use strict;
 
-package GENERIC;
+package Generic;
 
 #
 # Subroutines

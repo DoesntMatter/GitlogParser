@@ -22,10 +22,12 @@
 use strict;
 use Getopt::Long;
 use Cwd;
+use FindBin;
 
-require "../headers/generic.ph";
-require "../headers/parser.ph";
-require "../headers/sql.ph";
+use lib "$FindBin::Bin/../libs";
+use Generic;
+use Parser;
+use SQL;
 
 my %options;
 my $gitlog;
@@ -52,7 +54,7 @@ unless ($options{'prompt'}) {
         SQL::ShowHelp();
     }
     if ($options{'repo'} and $options{'repo'} ne '') {
-        unless (GENERIC::CheckRepo($options{'repo'})) {
+        unless (Generic::CheckRepo($options{'repo'})) {
             SQL::ShowHelp();
         }
     }
@@ -64,19 +66,19 @@ unless ($options{'prompt'}) {
     }
 }
 else {
-    $options{'repo'} = GENERIC::GetInput("Please enter repository path: ", 1);
-    unless (GENERIC::CheckRepo($options{'repo'})) {
+    $options{'repo'} = Generic::GetInput("Please enter repository path: ", 1);
+    unless (Generic::CheckRepo($options{'repo'})) {
         SQL::ShowHelp();
     }
-    $options{'count'} = GENERIC::GetInput("Please enter count of commits: ");
-    $options{'outfile'} = GENERIC::GetInput("Please enter outfile path: ");
+    $options{'count'} = Generic::GetInput("Please enter count of commits: ");
+    $options{'outfile'} = Generic::GetInput("Please enter outfile path: ");
 }
 
 #
 # Do the job
 #
 
-$gitlog = PARSER::ParseGitLog($options{'repo'}, $options{'count'});
+$gitlog = Parser::ParseGitLog($options{'repo'}, $options{'count'});
 unless ($gitlog) {
     print "Parsing `git log` command failed!\n";
     exit;

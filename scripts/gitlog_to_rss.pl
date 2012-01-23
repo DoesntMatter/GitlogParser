@@ -23,10 +23,12 @@ use strict;
 use Getopt::Long;
 use Cwd;
 use HTML::Entities;
+use FindBin;
 
-require "../headers/generic.ph";
-require "../headers/parser.ph";
-require "../headers/rss.ph";
+use lib "$FindBin::Bin/../libs";
+use Generic;
+use Parser;
+use RSS;
 
 my %options;
 my ($gitlog, $giturl);
@@ -57,7 +59,7 @@ unless ($options{'prompt'}) {
         RSS::ShowHelp();
     }
     if ($options{'repo'} and $options{'repo'} ne '') {
-        unless (GENERIC::CheckRepo($options{'repo'})) {
+        unless (Generic::CheckRepo($options{'repo'})) {
             RSS::ShowHelp();
         }
     }
@@ -77,22 +79,22 @@ unless ($options{'prompt'}) {
         $RSS::rss{'desc'} = $options{'desc'};
     }
     if ($options{'github'}) {
-        $giturl = GENERIC::GetGithubUrl($options{'repo'});
+        $giturl = Generic::GetGithubUrl($options{'repo'});
     }
 }
 else {
-    $options{'repo'} = GENERIC::GetInput("Please enter repository path: ", 1);
-    unless (GENERIC::CheckRepo($options{'repo'})) {
+    $options{'repo'} = Generic::GetInput("Please enter repository path: ", 1);
+    unless (Generic::CheckRepo($options{'repo'})) {
         RSS::ShowHelp();
     }
-    $options{'count'} = GENERIC::GetInput("Please enter count of commits: ");
-    $options{'outfile'} = GENERIC::GetInput("Please enter outfile path: ");
-    $RSS::rss{'title'} = GENERIC::GetInput("Please enter RSS title: ");
-    $RSS::rss{'desc'} = GENERIC::GetInput("Please enter RSS description: ");
-    $RSS::rss{'link'} = GENERIC::GetInput("Please enter RSS link: ");
-    $options{'github'} = GENERIC::GetInput("Please confirm github usage (0|1): ");
+    $options{'count'} = Generic::GetInput("Please enter count of commits: ");
+    $options{'outfile'} = Generic::GetInput("Please enter outfile path: ");
+    $RSS::rss{'title'} = Generic::GetInput("Please enter RSS title: ");
+    $RSS::rss{'desc'} = Generic::GetInput("Please enter RSS description: ");
+    $RSS::rss{'link'} = Generic::GetInput("Please enter RSS link: ");
+    $options{'github'} = Generic::GetInput("Please confirm github usage (0|1): ");
     if ($options{'github'}) {
-        $giturl = GENERIC::GetGithubUrl($options{'repo'});
+        $giturl = Generic::GetGithubUrl($options{'repo'});
     }
 }
 
@@ -100,7 +102,7 @@ else {
 # Do the job
 #
 
-$gitlog = PARSER::ParseGitLog($options{'repo'}, $options{'count'});
+$gitlog = Parser::ParseGitLog($options{'repo'}, $options{'count'});
 unless ($gitlog) {
     print "Parsing `git log` command failed!\n";
     exit;

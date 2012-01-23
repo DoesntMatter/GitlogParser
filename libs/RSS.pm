@@ -67,7 +67,7 @@ sub CreateRSS {
     my $file = shift || return undef;
     my $rss = shift || return undef;
     my $github = shift;
-    my @items = PARSER::SplitCommits($gitlog, "\n&gt;");
+    my @items = Parser::SplitCommits($gitlog, "\n&gt;");
     my $weblink = "https://github.com";
     my $itemlink = $rss{'link'};
     my $commit;

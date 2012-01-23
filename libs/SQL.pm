@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `gitlog` (
 sub CreateSQL {
     my $gitlog = shift || return undef;
     my $file = shift || return undef;
-    my @items = PARSER::SplitCommits($gitlog);
+    my @items = Parser::SplitCommits($gitlog);
 
     TableStruct($file);
 

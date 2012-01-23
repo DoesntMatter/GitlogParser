@@ -21,7 +21,7 @@
 
 use strict;
 
-package PARSER;
+package Parser;
 
 #
 # Subroutines
