@@ -95,7 +95,9 @@ sub CreateRSS {
         # $items[$i][5] Subject
         # $items[$i][6] Body
 
-        $items[$i][6] =~ s/\n/<br><br>/; # Better formatting
+        if ($items[$i][6]) {
+            $items[$i][6] =~ s/\n/<br><br>/; # Better formatting
+        }
         if ($github) {
             $itemlink = $commit = join("/", $github, "commit", $items[$i][1]);
             $items[$i][1] = "<a href=\"$commit\">$items[$i][1]</a>";
