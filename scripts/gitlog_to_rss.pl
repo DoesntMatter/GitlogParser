@@ -75,8 +75,8 @@ unless ($options{'prompt'}) {
     if (Generic::HasValue($options{'desc'})) {
         $RSS::rss{'desc'} = $options{'desc'};
     }
-    if (Generic::HasValue($options{'title'})) {
-        $RSS::rss{'desc'} = $options{'desc'};
+    if (Generic::HasValue($options{'link'})) {
+        $RSS::rss{'link'} = $options{'link'};
     }
     if ($options{'github'}) {
         $giturl = Generic::GetGithubUrl($options{'repo'});
