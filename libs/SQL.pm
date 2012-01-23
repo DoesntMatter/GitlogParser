@@ -21,6 +21,7 @@
 
 use strict;
 
+no warnings 'uninitialized'; # We can use uninitialized variables without any problem here
 package SQL;
 
 #
