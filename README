@@ -51,5 +51,7 @@ Options:
                         Default: All commits
     --outfile FILE      Name and path of generated SQL file
                         Default: $PWD/log.sql
+    --table TABLE       Preferred table name
+                        Default: gitlog
     --prompt            Prompt for input and do not use options
     --help              Show this output

@@ -41,6 +41,7 @@ GetOptions (
     "repo=s",
     "count=i",
     "outfile=s",
+    "table=s",
     "prompt",
     "help|?",
 );
@@ -72,6 +73,7 @@ else {
     }
     $options{'count'} = Generic::GetInput("Please enter count of commits: ");
     $options{'outfile'} = Generic::GetInput("Please enter outfile path: ");
+    $options{'table'} = Generic::GetInput("Please enter preferred table name: ");
 }
 
 #
@@ -84,6 +86,6 @@ unless ($gitlog) {
     exit;
 }
 
-SQL::CreateSQL($gitlog, $options{'outfile'});
+SQL::CreateSQL($gitlog, $options{'outfile'}, $options{'table'});
 
 exit;

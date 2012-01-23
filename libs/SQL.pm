@@ -39,6 +39,8 @@ Options:
                         Default: All commits
     --outfile FILE      Name and path of generated SQL file
                         Default: \$PWD/log.sql
+    --table TABLE       Preferred table name
+                        Default: gitlog
     --prompt            Prompt for input and do not use options
     --help              Show this output
 HELP
@@ -48,10 +50,11 @@ HELP
 
 sub TableStruct {
     my $file = shift || return undef;
+    my $table = shift || "gitlog";
 
     open(FILE, ">$file");
     print FILE "-- Create table structure 
-CREATE TABLE IF NOT EXISTS `gitlog` (
+CREATE TABLE IF NOT EXISTS `$table` (
     `hash`    varchar(40) NOT NULL DEFAULT '' COMMENT 'Unique identifier of commit',
     `date`    varchar(40) NOT NULL DEFAULT '' COMMENT 'Time of commit',
     `author`  varchar(30) NOT NULL DEFAULT '' COMMENT 'Author of commit',
@@ -69,9 +72,10 @@ CREATE TABLE IF NOT EXISTS `gitlog` (
 sub CreateSQL {
     my $gitlog = shift || return undef;
     my $file = shift || return undef;
+    my $table = shift || "gitlog";
     my @items = Parser::SplitCommits($gitlog);
 
-    TableStruct($file);
+    TableStruct($file, $table);
 
     open(FILE, ">>$file");
     for my $i ( 0 .. $#items ) {
@@ -84,7 +88,7 @@ sub CreateSQL {
         # $items[$i][6] Body
 
         print FILE "
-INSERT IGNORE INTO `gitlog` VALUES ('$items[$i][1]', '$items[$i][2]', '$items[$i][3]', '$items[$i][4]', '$items[$i][5]', '$items[$i][6]');";
+INSERT IGNORE INTO `$table` VALUES ('$items[$i][1]', '$items[$i][2]', '$items[$i][3]', '$items[$i][4]', '$items[$i][5]', '$items[$i][6]');";
     }
     close(FILE);
 
