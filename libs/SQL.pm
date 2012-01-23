@@ -87,6 +87,13 @@ sub CreateSQL {
         # $items[$i][5] Subject
         # $items[$i][6] Body
 
+        if ($items[$i][5]) {
+            $items[$i][5] =~ s/'/\\'/; # Needed to escape string in query
+        }
+        if ($items[$i][6]) {
+            $items[$i][6] =~ s/'/\\'/; # Needed to escape string in query
+        }
+
         print FILE "
 INSERT IGNORE INTO `$table` VALUES ('$items[$i][1]', '$items[$i][2]', '$items[$i][3]', '$items[$i][4]', '$items[$i][5]', '$items[$i][6]');";
     }
