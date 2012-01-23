@@ -29,8 +29,10 @@ use Generic;
 use Parser;
 use SQL;
 
-my %options;
 my $gitlog;
+my %options = (
+    outfile => cwd() . "/log.sql",
+);
 
 #
 # Get options
@@ -61,9 +63,6 @@ unless ($options{'prompt'}) {
     }
     else {
         SQL::ShowHelp();
-    }
-    unless ($options{'outfile'} and $options{'outfile'} ne '') {
-        $options{'outfile'} = cwd() . "/log.sql";
     }
 }
 else {

@@ -30,12 +30,15 @@ use Generic;
 use Parser;
 use RSS;
 
-my %options;
 my ($gitlog, $giturl);
+my %options = (
+    outfile => cwd() . "/feed.rss",
+);
 
 #
 # Get options
 #
+
 
 GetOptions (
     \%options,
@@ -65,9 +68,6 @@ unless ($options{'prompt'}) {
     }
     else {
         RSS::ShowHelp();
-    }
-    unless ($options{'outfile'} and $options{'outfile'} ne '') {
-        $options{'outfile'} = cwd() . "/feed.rss";
     }
     if ($options{'title'} and $options{'title'} ne '') {
         $RSS::rss{'title'} = $options{'title'};
