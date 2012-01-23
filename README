@@ -62,14 +62,13 @@ Usage:
     ./gitlog_to_html.pl --repo /path/to/repository
 
 Options:
-Gitlog to HTML - Converts the output of `git log` to a HTML file
-Copyright (C) 2012, by:  Dennis Christ <jaed1@gmx.net>
-
-Options:
     --repo REPO         Path to your Git repository
     --count COUNT       Count of commits that shoud be parsed
                         Default: All commits
     --outfile FILE      Name and path of generated SQL file
                         Default: $PWD/log.html
+    --title TITLE       Title of your HTML page
+                        Default: "Title of the HTML Page"
+    --github            Links your commits to github
     --prompt            Prompt for input and do not use options
     --help              Show this output

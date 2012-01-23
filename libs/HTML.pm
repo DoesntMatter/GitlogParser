@@ -25,6 +25,14 @@ no warnings 'uninitialized'; # We can use uninitialized variables without any pr
 package HTML;
 
 #
+# Variables
+#
+
+our %html = (
+    title => 'Title of the HTML Page',
+);
+
+#
 # Subroutines
 #
 
@@ -39,6 +47,9 @@ Options:
                         Default: All commits
     --outfile FILE      Name and path of generated SQL file
                         Default: \$PWD/log.html
+    --title TITLE       Title of your HTML page
+                        Default: "Title of the HTML Page"
+    --github            Links your commits to github
     --prompt            Prompt for input and do not use options
     --help              Show this output
 HELP
@@ -49,7 +60,13 @@ HELP
 sub CreateHTML {
     my $gitlog = shift || return undef;
     my $file = shift || return undef;
+    my $html = shift || return undef;
+    my $github = shift;
     my @items = Parser::SplitCommits($gitlog, "\n&gt;");
+    my $weblink = "https://github.com";
+    my $commit;
+
+
 
     open(FILE, ">$file");
     print FILE "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -58,7 +75,7 @@ sub CreateHTML {
     \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\">
 <head>
-    <title></title>
+    <title>$html{'title'}</title>
 </head>
 <body>";
     close(FILE);
@@ -72,6 +89,12 @@ sub CreateHTML {
         # $items[$i][4] E-Mail
         # $items[$i][5] Subject
         # $items[$i][6] Body
+
+        if ($github) {
+            $commit = join("/", $github, "commit", $items[$i][1]);
+            $items[$i][1] = "<a href=\"$commit\">$items[$i][1]</a>";
+            $items[$i][3] = "<a href=\"$weblink/$items[$i][3]\">$items[$i][3]</a>";
+        }
 
         print FILE "<h3>$items[$i][5]</h3>
 <p>$items[$i][3] &lt;$items[$i][4]&gt; committed $items[$i][1]</p>

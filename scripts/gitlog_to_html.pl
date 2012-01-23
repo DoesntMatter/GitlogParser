@@ -39,12 +39,13 @@ my %options = (
 # Get options
 #
 
-
 GetOptions (
     \%options,
     "repo=s",
     "count=i",
     "outfile=s",
+    "title=s",
+    "github",
     "prompt",
     "help|?",
 );
@@ -65,6 +66,12 @@ unless ($options{'prompt'}) {
     else {
         HTML::ShowHelp();
     }
+    if (Generic::HasValue($options{'title'})) {
+        $HTML::html{'title'} = $options{'title'};
+    }
+    if ($options{'github'}) {
+        $giturl = Generic::GetGithubUrl($options{'repo'});
+    }
 }
 else {
     $options{'repo'} = Generic::GetInput("Please enter repository path: ", 1);
@@ -73,6 +80,11 @@ else {
     }
     $options{'count'} = Generic::GetInput("Please enter count of commits: ");
     $options{'outfile'} = Generic::GetInput("Please enter outfile path: ");
+    $HTML::html{'title'} = Generic::GetInput("Please enter HTML title: ");
+    $options{'github'} = Generic::GetInput("Please confirm github usage (0|1): ");
+    if ($options{'github'}) {
+        $giturl = Generic::GetGithubUrl($options{'repo'});
+    }
 }
 
 #
@@ -85,6 +97,6 @@ unless ($gitlog) {
     exit;
 }
 
-HTML::CreateHTML(HTML::Entities::encode($gitlog), $options{'outfile'});
+HTML::CreateHTML(HTML::Entities::encode($gitlog), $options{'outfile'}, \%HTML::html, $giturl);
 
 exit;
