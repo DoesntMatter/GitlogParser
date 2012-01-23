@@ -56,7 +56,7 @@ unless ($options{'prompt'}) {
     if ($options{'help'}) {
         SQL::ShowHelp();
     }
-    if ($options{'repo'} and $options{'repo'} ne '') {
+    if (Generic::HasValue($options{'repo'})) {
         unless (Generic::CheckRepo($options{'repo'})) {
             SQL::ShowHelp();
         }

@@ -61,7 +61,7 @@ unless ($options{'prompt'}) {
     if ($options{'help'}) {
         RSS::ShowHelp();
     }
-    if ($options{'repo'} and $options{'repo'} ne '') {
+    if (Generic::HasValue($options{'repo'})) {
         unless (Generic::CheckRepo($options{'repo'})) {
             RSS::ShowHelp();
         }
@@ -69,13 +69,13 @@ unless ($options{'prompt'}) {
     else {
         RSS::ShowHelp();
     }
-    if ($options{'title'} and $options{'title'} ne '') {
+    if (Generic::HasValue($options{'title'})) {
         $RSS::rss{'title'} = $options{'title'};
     }
-    if ($options{'desc'} and $options{'desc'} ne '') {
+    if (Generic::HasValue($options{'desc'})) {
         $RSS::rss{'desc'} = $options{'desc'};
     }
-    if ($options{'title'} and $options{'title'} ne '') {
+    if (Generic::HasValue($options{'title'})) {
         $RSS::rss{'desc'} = $options{'desc'};
     }
     if ($options{'github'}) {

@@ -27,6 +27,15 @@ package Generic;
 # Subroutines
 #
 
+sub HasValue {
+    my $var = shift || return undef;
+
+    if ($var and $var ne '') {
+        return 1;
+    }
+    return undef;
+}
+
 sub GetInput {
     my $text = shift || return undef;
     my $mandatory = shift || 0;
