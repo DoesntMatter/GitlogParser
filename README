@@ -16,11 +16,12 @@ List of current support filetypes:
 
 Version
 ---------------------------------------------------------------
-1.5
+1.6
 
 
 Manual
 ---------------------------------------------------------------
+* Gitlog to RSS
 Usage:
     ./gitlog_to_rss.pl --repo /path/to/repository
 
@@ -40,6 +41,7 @@ Options:
     --prompt            Prompt for input and do not use options
     --help              Show this output
 
+* Gitlog to SQL
 Usage:
     ./gitlog_to_sql.pl --repo /path/to/repository
 
