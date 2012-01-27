@@ -20,6 +20,7 @@
 # http://www.gnu.org/copyleft/gpl.html
 
 use strict;
+use Date::Parse;
 
 no warnings 'uninitialized'; # We can use uninitialized variables without any problem here
 package SQL;
@@ -56,7 +57,7 @@ sub TableStruct {
     print FILE "-- Create table structure 
 CREATE TABLE IF NOT EXISTS `$table` (
     `hash`    varchar(40) NOT NULL DEFAULT '' COMMENT 'Unique identifier of commit',
-    `date`    varchar(40) NOT NULL DEFAULT '' COMMENT 'Time of commit',
+    `date`    int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Time of commit',
     `author`  varchar(30) NOT NULL DEFAULT '' COMMENT 'Author of commit',
     `email`   varchar(30) NOT NULL DEFAULT '' COMMENT 'Email of commit',
     `subject` text NOT NULL COMMENT 'Subject of commit',
@@ -92,6 +93,11 @@ sub CreateSQL {
         }
         if ($items[$i][6]) {
             $items[$i][6] =~ s/'/\\'/; # Needed to escape string in query
+        }
+
+        # Convert Commit-Date to UNIX timestamp
+        if ($items[$i][2]) {
+            $items[$i][2] = Date::Parse::str2time($items[$i][2]);
         }
 
         print FILE "
