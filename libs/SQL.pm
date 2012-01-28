@@ -52,6 +52,7 @@ HELP
 sub TableStruct {
     my $file = shift || return undef;
     my $table = shift || "gitlog";
+    my @columns;
 
     open(FILE, ">$file");
     print FILE "-- Create table structure 
@@ -64,10 +65,11 @@ CREATE TABLE IF NOT EXISTS `$table` (
     `body`    text NOT NULL COMMENT 'Body message of commit',
     PRIMARY KEY(`hash`)
 );\n
--- Insert rows";
+-- Insert rows\n";
     close(FILE);
 
-    return 1;
+    @columns = qw(`hash` `date` `author` `email` `subject` `body`);
+    return @columns;
 }
 
 sub CreateSQL {
@@ -75,10 +77,14 @@ sub CreateSQL {
     my $file = shift || return undef;
     my $table = shift || "gitlog";
     my @items = Parser::SplitCommits($gitlog);
-
-    TableStruct($file, $table);
+    my @column = TableStruct($file, $table);
+    my $columns = join(",", @column);
+    my (@query, $queries);
 
     open(FILE, ">>$file");
+    print FILE "REPLACE INTO `$table`
+    ($columns)
+VALUES\n";
     for my $i ( 0 .. $#items ) {
         # $items[$i][0] Blank
         # $items[$i][1] Commit-Hash
@@ -99,10 +105,10 @@ sub CreateSQL {
         if ($items[$i][2]) {
             $items[$i][2] = Date::Parse::str2time($items[$i][2]);
         }
-
-        print FILE "
-INSERT IGNORE INTO `$table` VALUES ('$items[$i][1]', '$items[$i][2]', '$items[$i][3]', '$items[$i][4]', '$items[$i][5]', '$items[$i][6]');";
+        push(@query, "('$items[$i][1]', '$items[$i][2]', '$items[$i][3]', '$items[$i][4]', '$items[$i][5]', '$items[$i][6]')");
     }
+    $queries = join(",\n", @query);
+    print FILE "$queries;";
     close(FILE);
 
     return 1;
