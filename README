@@ -17,7 +17,7 @@ List of current support filetypes:
 
 Version
 ---------------------------------------------------------------
-1.8
+1.9
 
 
 Manual
@@ -54,6 +54,7 @@ Options:
                         Default: $PWD/log.sql
     --table TABLE       Preferred table name
                         Default: gitlog
+    --replace           Use REPLACE statement for queries
     --prompt            Prompt for input and do not use options
     --help              Show this output
 
