@@ -44,6 +44,7 @@ GetOptions (
     "count=i",
     "outfile=s",
     "table=s",
+    "replace",
     "prompt",
     "help|?",
 );
@@ -73,6 +74,7 @@ else {
     $options{'count'} = Generic::GetInput("Please enter count of commits: ");
     $options{'outfile'} = Generic::GetInput("Please enter outfile path: ");
     $options{'table'} = Generic::GetInput("Please enter preferred table name: ");
+    $options{'replace'} = Generic::GetInput("Please confirm replace query usage (0|1): ");
 }
 
 #
@@ -85,6 +87,6 @@ unless ($gitlog) {
     exit;
 }
 
-SQL::CreateSQL($gitlog, $options{'outfile'}, $options{'table'});
+SQL::CreateSQL($gitlog, $options{'outfile'}, $options{'table'}, $options{'replace'});
 
 exit;

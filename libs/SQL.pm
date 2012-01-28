@@ -76,13 +76,15 @@ sub CreateSQL {
     my $gitlog = shift || return undef;
     my $file = shift || return undef;
     my $table = shift || "gitlog";
+    my $replace = shift;
+    my $method = $replace ? "REPLACE INTO" : "INSERT IGNORE INTO";
     my @items = Parser::SplitCommits($gitlog);
     my @column = TableStruct($file, $table);
     my $columns = join(",", @column);
     my (@query, $queries);
 
     open(FILE, ">>$file");
-    print FILE "REPLACE INTO `$table`
+    print FILE "$method `$table`
     ($columns)
 VALUES\n";
     for my $i ( 0 .. $#items ) {
