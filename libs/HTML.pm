@@ -66,8 +66,6 @@ sub CreateHTML {
     my $weblink = "https://github.com";
     my $commit;
 
-
-
     open(FILE, ">$file");
     print FILE "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <!DOCTYPE html 
@@ -78,9 +76,7 @@ sub CreateHTML {
     <title>$html{'title'}</title>
 </head>
 <body>";
-    close(FILE);
 
-    open(FILE, ">>$file");
     for my $i ( 0 .. $#items ) {
         # $items[$i][0] Blank
         # $items[$i][1] Commit-Hash
@@ -102,9 +98,7 @@ sub CreateHTML {
 <p>$items[$i][5]</p>
 <p>$items[$i][6]</p>";
     }
-    close(FILE);
 
-    open(FILE, ">>$file");
     print FILE "</body>
 </html>";
     close(FILE);

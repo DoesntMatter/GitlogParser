@@ -73,8 +73,8 @@ sub CreateRSS {
     my $itemlink = $rss{'link'};
     my $commit;
 
-    # Header
     open(FILE, ">$file");
+    # Header
     print FILE "<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <rss version=\"2.0\">
 <channel>
@@ -83,10 +83,8 @@ sub CreateRSS {
 <link>$itemlink</link>
 <description>$rss{'desc'}</description>
 ";
-    close(FILE);
 
     # Content
-    open(FILE, ">>$file");
     for my $i ( 0 .. $#items ) {
         # $items[$i][0] Blank
         # $items[$i][1] Commit-Hash
@@ -116,10 +114,8 @@ $items[$i][6]
    ]]></description>
 </item>";
     }
-    close(FILE);
 
     # Footer
-    open(FILE, ">>$file");
     print FILE "\n
 </channel>
 </rss>";
