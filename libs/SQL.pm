@@ -97,10 +97,10 @@ VALUES\n";
         # $items[$i][6] Body
 
         if ($items[$i][5]) {
-            $items[$i][5] =~ s/'/\\'/; # Needed to escape string in query
+            $items[$i][5] =~ s/'/\\'/g; # Needed to escape string in query
         }
         if ($items[$i][6]) {
-            $items[$i][6] =~ s/'/\\'/; # Needed to escape string in query
+            $items[$i][6] =~ s/'/\\'/g; # Needed to escape string in query
         }
 
         # Convert Commit-Date to UNIX timestamp
