@@ -59,8 +59,8 @@ sub TableStruct {
 CREATE TABLE IF NOT EXISTS `$table` (
     `hash`    varchar(40) NOT NULL DEFAULT '' COMMENT 'Unique identifier of commit',
     `date`    int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Time of commit',
-    `author`  varchar(30) NOT NULL DEFAULT '' COMMENT 'Author of commit',
-    `email`   varchar(30) NOT NULL DEFAULT '' COMMENT 'Email of commit',
+    `author`  varchar(100) NOT NULL DEFAULT '' COMMENT 'Author of commit',
+    `email`   varchar(100) NOT NULL DEFAULT '' COMMENT 'Email of commit',
     `subject` text NOT NULL COMMENT 'Subject of commit',
     `body`    text NOT NULL COMMENT 'Body message of commit',
     PRIMARY KEY(`hash`)
